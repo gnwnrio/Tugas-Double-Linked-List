@@ -1,0 +1,248 @@
+package algoritma;
+
+import java.util.Scanner;
+
+class choosing {
+    public static boolean yaAtauTdk(String mail) {
+        System.out.println("\n" + mail + "\nJika Lanjut Masukkan (y)" + "\nJika Berhenti Masukan (n)");
+
+        Scanner scan = new Scanner(System.in);
+        String choose = scan.next();
+        while (!choose.equalsIgnoreCase("Y") && !choose.equalsIgnoreCase("n")) {
+            System.err.println("Pilihan Anda bukan Y ataupun N ");
+            System.out.println("\n" + mail + "(y/n)");
+            choose = scan.next();
+        }
+        return choose.equalsIgnoreCase("y");
+    }
+}
+
+class Node {
+    int value;
+    Node next;
+    Node preview;
+}
+
+public class AsdlTugas2a {
+    Node head;
+    Node tail;
+
+    public void backSide(int value) {
+        Node nod = new Node();
+        nod.value = value;
+        nod.next = null;
+        if (head == null) {
+            head = nod;
+        } else {
+            Node n = head;
+            while (n.next != null) {
+                n = n.next;
+            }
+            n.next = nod;
+        }
+    }
+
+    public void frontSide(int value) {
+        Node nod = new Node();
+        nod.value = value;
+        nod.next = head;
+        head = nod;
+    }
+
+    public void midSide(int value, int index) {
+        Node nod = new Node();
+        nod.next = null;
+        nod.value = value;
+        if (head == null) {
+            frontSide(value);
+        } else {
+            Node n = head;
+            for (int i = 0; i < index - 1; i++) {
+                n = n.next;
+            }
+            nod.next = n.next;
+            n.next = nod;
+        }
+    }
+
+    public void showData(boolean a) {
+        Node p = null;
+        if (a) {
+            p = head;
+        } else {
+            p = tail;
+        }
+        System.out.print("[ ");
+        while (p != null) {
+            System.out.print(p.value + " ");
+            if (a) {
+                p = p.next;
+            } else {
+                p = p.preview;
+            }
+        }
+        System.out.println("]");
+    }
+
+    public void sortList() {
+        Node n = head;
+        Node index = null;
+        int temp;
+        if (head == null) {
+            return;
+        } else {
+            while (n != null) {
+                index = n.next;
+                while (index != null) {
+                    if (n.value < index.value) {
+                        temp = n.value;
+                        index.value = temp;
+                    }
+                    index = index.next;
+                }
+                n = n.next;
+            }
+        }
+    }
+
+    public void deletedValue(int value) {
+        Node n = head;
+        Node x = null;
+        int c = 0;
+        if (value == head.value) {
+            head = head.next;
+        } else {
+            while (n.next != null) {
+                n = n.next;
+                if (value == n.value) {
+                    c++;
+                    break;
+                }
+                c++;
+            }
+            n = head;
+            for (int i = 0; i < c - 1; i++) {
+                n = n.next;
+            }
+            x = n.next;
+            n.next = x.next;
+        }
+    }
+
+    public void frontDeleted() {
+        head = head.next;
+    }
+
+    public void backDeleted() {
+        if (head.next == null) {
+            frontDeleted();
+        } else {
+            Node n = head;
+            Node n1 = null;
+            while (n.next.next != null) {
+                n = n.next;
+            }
+            n1 = n.next;
+            n.next = n1.next;
+
+        }
+    }
+
+    private static void exitPrograms() {
+        System.exit(0);
+    }
+
+    public static void main(String[] args) {
+        Scanner scann = new Scanner(System.in);
+        int x, y;
+        boolean programBerjalan = true;
+        int choice1;
+        int choice2;
+
+        AsdlTugas2a op = new AsdlTugas2a();
+        while (programBerjalan) {
+            System.out.println("\n### Menu Program ###" + "\n 1. Tambah Data" + "\n 2. Hapus Data"+ "\n 3. Keluar Program");
+
+            System.out.print("Masukkan Pilihan Anda : ");
+            choice1 = scann.nextInt();
+            switch (choice1) {
+                case 1:
+                    boolean dataRun = true;
+                    while (dataRun) {
+                        System.out.println("\n 1. Tambah Data Di Awal");
+                        System.out.println(" 2. Tambah Data Di Tengah");
+                        System.out.println(" 3. Tambah Data Di Akhir");
+                        System.out.println(" 4. Menu Utama");
+                        System.out.print("Masukkan Pilihan Anda [1-4] : ");
+                        choice2 = scann.nextInt();
+                        switch (choice2) {
+                            case 1:
+                                System.out.print("Masukkan Nilai : ");
+                                x = scann.nextInt();
+                                op.frontSide(x);
+                                op.showData(true);
+                                break;
+                            case 2:
+                                System.out.print("Masukkan Nilai : ");
+                                x = scann.nextInt();
+                                System.out.print("Masukkan Index-nya : ");
+                                y = scann.nextInt();
+                                op.midSide(x, y);
+                                op.showData(true);
+                                break;
+                            case 3:
+                                System.out.print("Masukkan Nilai : ");
+                                x = scann.nextInt();
+                                op.backSide(x);
+                                op.showData(true);
+                            case 4:
+                                dataRun = choosing.yaAtauTdk("Apakah Anda ingin menambah data lagi? ");
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
+                    boolean dataRun2 = true;
+                    System.out.println();
+                    System.out.println("-Data yang tersimpan-");
+                    op.showData(true);
+                    while (dataRun2) {
+                        System.out.println("\n 1. Hapus Data Di Awal");
+                        System.out.println(" 2. Hapus Data Di Tengah");
+                        System.out.println(" 3. Hapus Data Di Belakang");
+                        System.out.println(" 4. Menu Utama");
+                        System.out.print(" Masukkan Angka [1-4]: ");
+                        choice2 = scann.nextInt();
+                        switch (choice2) {
+                            case 1:
+                                op.frontDeleted();
+                                op.showData(true);
+                                break;
+                            case 2:
+                                System.out.print(" Masukkan Angka : ");
+                                x = scann.nextInt();
+                                op.deletedValue(x);
+                                op.showData(true);
+                                break;
+                            case 3:
+                                op.backDeleted();
+                                op.showData(true);
+                                System.out.println();
+                                break;
+                            case 4:
+                                dataRun2 = choosing.yaAtauTdk("Apakah anda mau menghapus data lagi? ");
+                                break;
+                        }
+                    }
+                    break;
+                case 3:
+                    exitPrograms();
+                    break;
+
+
+            }
+            programBerjalan = choosing.yaAtauTdk("Apakah anda masih menggunakan program ini ? ");
+        }
+    }
+
+}
